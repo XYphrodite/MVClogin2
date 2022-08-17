@@ -11,6 +11,7 @@ namespace MVClogin2
 {
     public class Program
     {
+        //public bool isSignIn
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

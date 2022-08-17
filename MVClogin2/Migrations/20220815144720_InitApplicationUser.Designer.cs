@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVClogin2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220815084303_InitApplicationUser")]
+    [Migration("20220815144720_InitApplicationUser")]
     partial class InitApplicationUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "JSON";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using MVClogin2.Controllers 
+@{  
+   var product = ViewData["Products"] as IEnumerable<Product>;   
+}
+@if(User.Identity.IsAuthenticated)  // this does not work
+{
+                <table>  
+    <tr>   
+        <th>Title</th>  
+        <th>Description</th>  
+    </tr>  
+
+    @foreach (var pr in product)
+    {  
+        <tr> 
+            <td>@pr.Title</td>
+            <td>@pr.Description</td>
+        </tr> 
+    }
+      </table>
+            }
+else
+{
+	<h1>Доступно только авторизованным пользователям</h1>
+}
+
+  
+
+
