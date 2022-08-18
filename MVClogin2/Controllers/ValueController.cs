@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace MVClogin2.Controllers
 {
@@ -21,9 +22,11 @@ namespace MVClogin2.Controllers
         {
             _env = env;
         }
-        [HttpGet]
+        [Authorize]
+        [HttpGet("Data")]
         public IEnumerable<Product> GetData(string id=null)
         {
+            //var currentUser = GetCurrentUser();
             JsonFileProductService ProductService = new JsonFileProductService(_env);
             List<Product> products  = ProductService.GetProducts().ToList();
             if (id == null)
@@ -41,12 +44,27 @@ namespace MVClogin2.Controllers
                 return null; 
             }
         }
-        [HttpPost]
-        public IActionResult PostString(string str)
+        [AllowAnonymous]
+        [HttpGet("Public")]
+        public IActionResult Public()
         {
-            return base.Content("<div class=\"text-center\">" +
-                        "<h1 class=\"display-4\">" + str + "</h1>" +
-                    "</div>");
+            return Ok("Hi, you're on public property");
+        }
+
+        private UserModel GetCurrentUser()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                var userClaims = identity.Claims;
+
+                return new UserModel
+                {
+                    username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value
+                };
+            }
+            return null;
         }
 
     }

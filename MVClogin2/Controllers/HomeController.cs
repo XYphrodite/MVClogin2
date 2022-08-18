@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 
 namespace MVClogin2.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _env;

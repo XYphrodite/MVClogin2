@@ -17,6 +17,20 @@ using MVClogin2.Areas.Identity.Data;
 
 namespace MVClogin2.Areas.Identity.Pages.Account
 {
+
+
+    public class CustomPasswordHasher : IPasswordHasher<ApplicationUser>
+    {
+        public string HashPassword(ApplicationUser user, string password)
+        {
+            return password;
+        }
+
+        public PasswordVerificationResult VerifyHashedPassword(ApplicationUser user, string hashedPassword, string providedPassword)
+        {
+            return hashedPassword.Equals(providedPassword) ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
+        }
+    }
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
@@ -24,6 +38,8 @@ namespace MVClogin2.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+
+
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,

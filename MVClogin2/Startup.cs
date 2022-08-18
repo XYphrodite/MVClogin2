@@ -2,10 +2,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using MVClogin2.Areas.Identity.Data;
+using MVClogin2.Areas.Identity.Pages.Account;
 using MVClogin2.Services;
 using System;
 using System.Collections.Generic;
@@ -30,6 +33,7 @@ namespace MVClogin2
             services.AddControllersWithViews();
 
             services.AddTransient<JsonFileProductService>();
+            services.AddTransient<JsonFileSqlConstService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -47,6 +51,8 @@ namespace MVClogin2
                 });
             services.AddMvc();
             services.AddControllers();
+
+            services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

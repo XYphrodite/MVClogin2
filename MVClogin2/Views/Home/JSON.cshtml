@@ -9,7 +9,7 @@
 @{  
    var product = ViewData["Products"] as IEnumerable<Product>;   
 }
-@if(User.Identity.IsAuthenticated)  // this does not work
+@if(User.Identity.IsAuthenticated)
 {
                 <table>  
     <tr>   
