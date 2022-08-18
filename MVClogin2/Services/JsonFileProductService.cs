@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using MVClogin2.Models;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -28,12 +29,18 @@ namespace MVClogin2.Services
                     });
             }
         }
-        //public string getProducts()
-        //{
-        //    StreamReader stream = File.OpenText(JsonFileName);
-        //    string json = stream.ReadToEnd();
-        //    return json;
-        //}
+        public string getProductsAsString()
+        {
+            StreamReader stream = File.OpenText(JsonFileName);
+            return stream.ReadToEnd();
+        }
+        public JObject getProductsAsJsonObject()
+        {
+            StreamReader stream = File.OpenText(JsonFileName);
+            string str = stream.ReadToEnd();
+            JObject jObject = JObject.Parse(str);
+            return jObject;
+        }
 
     }
 }

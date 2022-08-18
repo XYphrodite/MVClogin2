@@ -1,5 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MVClogin2.Models;
+using MVClogin2.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace MVClogin2.Controllers
 {
@@ -7,17 +13,17 @@ namespace MVClogin2.Controllers
     [ApiController]
     public class RecipiesController : ControllerBase
     {
-        [HttpGet]
-        public ContentResult GetString()
+        private readonly IWebHostEnvironment _env;
+        public RecipiesController(IWebHostEnvironment env)
         {
-            return new ContentResult
-            {
-                ContentType = "text/html",
-                //StatusCode = (int)HttpStatusCode.OK,
-                Content = "<html>" +
-                "<body>Hello World</body>" +
-                "</html>"
-            };
+            _env = env;
+        }
+        [HttpGet]
+        public JObject GetData()
+        {
+            JsonFileProductService ProductService = new JsonFileProductService(_env);
+            JObject jObject = ProductService.getProductsAsJsonObject();
+            return jObject;          
         }
         [HttpPost]
         public IActionResult PostString(string str)

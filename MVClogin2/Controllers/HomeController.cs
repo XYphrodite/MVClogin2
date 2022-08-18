@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVClogin2.Models;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace MVClogin2.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _env;
@@ -25,12 +27,12 @@ namespace MVClogin2.Controllers
             _logger = logger;
             _env = env;
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
-
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();

@@ -86,7 +86,6 @@ namespace MVClogin2.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    //username = Input.Email;
 
 
                     return LocalRedirect(returnUrl);
