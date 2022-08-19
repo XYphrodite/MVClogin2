@@ -28,6 +28,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace MVClogin2
 {
@@ -69,17 +71,17 @@ namespace MVClogin2
 
 
 
-            //services.AddAuthentication(options =>
-            //{
-            //    // these must be set other ASP.NET Core will throw exception that no
-            //    // default authentication scheme or default challenge scheme is set.
-            //    options.DefaultAuthenticateScheme =
-            //            CookieAuthenticationDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme =
-            //            CookieAuthenticationDefaults.AuthenticationScheme;
-            //}).AddCookie();
-            //services.AddMvc(options => options.Filters.Add(new
-            //         RequireHttpsAttribute()));
+            services.AddAuthentication(options =>
+            {
+                // these must be set other ASP.NET Core will throw exception that no
+                // default authentication scheme or default challenge scheme is set.
+                options.DefaultAuthenticateScheme =
+                        CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme =
+                        CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie();
+            services.AddMvc(options => options.Filters.Add(new
+                     RequireHttpsAttribute()));
 
             //services.AddAuthentication(o =>
             //  {
@@ -103,16 +105,62 @@ namespace MVClogin2
             //  {
             //      o.ExpireTimeSpan = TimeSpan.FromMinutes(30); // optional
             //  });
-            //var multiSchemePolicy = new AuthorizationPolicyBuilder(
+            //var multiSchemePolicy = new Authentication(
             //        CookieAuthenticationDefaults.AuthenticationScheme,
             //        JwtBearerDefaults.AuthenticationScheme
             //        )
             //      .RequireAuthenticatedUser()
             //      .Build();
 
-            //services.AddAuthorization(o => o.DefaultPolicy = multiSchemePolicy);
+            //services.AddAuthentication(o => o.DefaultAuthenticateScheme = multiSchemePolicy);
 
-            //services.AddMvc();
+
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityDbContext>();
+
+            services.Configure<IdentityOptions>(opts =>
+            {
+                opts.Password.RequiredLength = 6;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+                opts.User.RequireUniqueEmail = true;
+            });
+
+            services.AddAuthentication(opts =>
+            {
+                opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(//opts =>
+            /*{
+                opts.Events.DisableRedirectForPath(e => e.OnRedirectToLogin, "/api", StatusCodes.Status401Unauthorized);
+                opts.Events.DisableRedirectForPath(e => e.OnRedirectToAccessDenied, "/api", StatusCodes.Status403Forbidden);
+            }*/).AddJwtBearer(opts =>
+            {
+                opts.RequireHttpsMetadata = false;
+                opts.SaveToken = true;
+                opts.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.ASCII.GetBytes(Configuration["jwtSecret"])),
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+                opts.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = async ctx =>
+                    {
+                        var usrmgr = ctx.HttpContext.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+                        var signinmgr = ctx.HttpContext.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
+                        string username = ctx.Principal.FindFirst(ClaimTypes.Name)?.Value;
+                        IdentityUser idUser = await usrmgr.FindByNameAsync(username);
+                        ctx.Principal = await signinmgr.CreateUserPrincipalAsync(idUser);
+                    }
+                };
+            });
+
+            services.AddMvc();
             services.AddControllers();
             //services.AddMvc(config =>
             //{
@@ -126,31 +174,7 @@ namespace MVClogin2
 
             //cookie-------------------------------------------------
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //        .AddCookie(options =>
-            //        {
-            //            // Specify where to redirect un-authenticated users
-            //            options.LoginPath = "/Login";
-
-            //            // Specify the name of the auth cookie.
-            //            // ASP.NET picks a dumb name by default.
-            //            options.Cookie.Name = "JWT";
-            //        });
-
-            //services.AddCookies();
-            // ...snip... Other ASP.NET Core configuration here!
-
-            //services.AddCors();
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //.AddCookie(o =>
-            //{
-            //    //o.Cookie.Name = options.CookieName;
-            //    //o.Cookie.Domain = options.CookieDomain;
-            //    //o.SlidingExpiration = true;
-            //    //o.ExpireTimeSpan = options.CookieLifetime;
-            //    //o.TicketDataFormat = ticketFormat;
-            //    //o.CookieManager = new CustomChunkingCookieManager();
-            //});
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
