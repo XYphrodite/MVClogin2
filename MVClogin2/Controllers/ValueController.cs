@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ using System.Security.Claims;
 
 namespace MVClogin2.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class ValueController : ControllerBase
@@ -22,7 +23,7 @@ namespace MVClogin2.Controllers
         {
             _env = env;
         }
-        [Authorize]
+
         [HttpGet("Data")]
         public IEnumerable<Product> GetData(string id=null)
         {

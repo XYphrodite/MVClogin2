@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Security.Jwt;
 using MVClogin2.Areas.Identity.Data;
 using MVClogin2.Areas.Identity.Pages.Account;
 using MVClogin2.Services;
@@ -15,6 +17,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
+
+using Owin;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MVClogin2
 {
@@ -31,28 +44,113 @@ namespace MVClogin2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            //p
             services.AddTransient<JsonFileProductService>();
             services.AddTransient<JsonFileSqlConstService>();
+            //jwt---------------------------------------
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["Jwt:Issuer"],
-                        ValidAudience = Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                    };
-                });
-            services.AddMvc();
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = true,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = Configuration["Jwt:Issuer"],
+            //            ValidAudience = Configuration["Jwt:Audience"],
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+            //        };
+            //    });
+            //services.AddAuthentication();
+
+            //multi-authentification policy--------------------------------
+
+
+
+            //services.AddAuthentication(options =>
+            //{
+            //    // these must be set other ASP.NET Core will throw exception that no
+            //    // default authentication scheme or default challenge scheme is set.
+            //    options.DefaultAuthenticateScheme =
+            //            CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme =
+            //            CookieAuthenticationDefaults.AuthenticationScheme;
+            //}).AddCookie();
+            //services.AddMvc(options => options.Filters.Add(new
+            //         RequireHttpsAttribute()));
+
+            //services.AddAuthentication(o =>
+            //  {
+            //      o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //      o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //  })
+            //  .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = true,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = Configuration["Jwt:Issuer"],
+            //            ValidAudience = Configuration["Jwt:Audience"],
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+            //        };
+            //    })
+            //  .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
+            //  {
+            //      o.ExpireTimeSpan = TimeSpan.FromMinutes(30); // optional
+            //  });
+            //var multiSchemePolicy = new AuthorizationPolicyBuilder(
+            //        CookieAuthenticationDefaults.AuthenticationScheme,
+            //        JwtBearerDefaults.AuthenticationScheme
+            //        )
+            //      .RequireAuthenticatedUser()
+            //      .Build();
+
+            //services.AddAuthorization(o => o.DefaultPolicy = multiSchemePolicy);
+
+            //services.AddMvc();
             services.AddControllers();
+            //services.AddMvc(config =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //                     .RequireAuthenticatedUser()
+            //                     .Build();
+            //    config.Filters.Add(new AuthorizeFilter(policy));
+            //});
 
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();
+
+            //cookie-------------------------------------------------
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //        .AddCookie(options =>
+            //        {
+            //            // Specify where to redirect un-authenticated users
+            //            options.LoginPath = "/Login";
+
+            //            // Specify the name of the auth cookie.
+            //            // ASP.NET picks a dumb name by default.
+            //            options.Cookie.Name = "JWT";
+            //        });
+
+            //services.AddCookies();
+            // ...snip... Other ASP.NET Core configuration here!
+
+            //services.AddCors();
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //.AddCookie(o =>
+            //{
+            //    //o.Cookie.Name = options.CookieName;
+            //    //o.Cookie.Domain = options.CookieDomain;
+            //    //o.SlidingExpiration = true;
+            //    //o.ExpireTimeSpan = options.CookieLifetime;
+            //    //o.TicketDataFormat = ticketFormat;
+            //    //o.CookieManager = new CustomChunkingCookieManager();
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,11 +170,11 @@ namespace MVClogin2
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            //--------------------
             app.UseAuthentication();
 
             app.UseAuthorization();
-
+            //--------------------
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -85,6 +183,36 @@ namespace MVClogin2
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
+            //cookie
+            //var cookiePolicyOptions = new CookiePolicyOptions
+            //{
+            //    MinimumSameSitePolicy = SameSiteMode.Strict,
+            //};
+            //app.UseCookiePolicy(cookiePolicyOptions);
+
+
+            //    app.UseCors(x => x
+            //.WithOrigins("https://localhost:3000") // путь к нашему SPA клиенту
+            //.AllowCredentials()
+            //.AllowAnyMethod()
+            //.AllowAnyHeader());
+            //    app.UseCookiePolicy(new CookiePolicyOptions
+            //    {
+            //        MinimumSameSitePolicy = SameSiteMode.Strict,
+            //        HttpOnly = HttpOnlyPolicy.Always,
+            //        Secure = CookieSecurePolicy.Always
+            //    });
+            //    app.Use(async (context, next) =>
+            //    {
+            //        var token = context.Request.Cookies[".AspNetCore.Application.Id"];
+            //        if (!string.IsNullOrEmpty(token))
+            //            context.Request.Headers.Add("Authorization", "Bearer " + token);
+
+            //        await next();
+            //    });
+            //    app.UseAuthentication();
+
+            //ConfigureOAuthTokenConsumption(app);
         }
     }
 }

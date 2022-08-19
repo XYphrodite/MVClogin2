@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace MVClogin2.Controllers
 {
-    [Authorize]
+
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _env;
@@ -43,8 +46,13 @@ namespace MVClogin2.Controllers
         {
             return View();
         }
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize]
         public IActionResult JSON()
         {
+            //HttpContext.SignInAsync(
+            //    CookieAuthenticationDefaults.AuthenticationScheme,
+            //    HttpContext.User);
             JsonFileProductService ProductService = new JsonFileProductService(_env);
             IEnumerable<Product> products = ProductService.GetProducts();
             ViewData["Products"] = products;
