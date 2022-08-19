@@ -10,11 +10,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 
 namespace MVClogin2.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _env;
@@ -36,6 +38,7 @@ namespace MVClogin2.Controllers
         {
             return View();
         }
+        [AllowAnonymous]
         public IActionResult Data()
         {
             return View();
@@ -52,6 +55,21 @@ namespace MVClogin2.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        private UserModel GetCurrentUser()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                var userClaims = identity.Claims;
+
+                return new UserModel
+                {
+                    username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value
+                };
+            }
+            return null;
         }
     }
 }
