@@ -51,130 +51,29 @@ namespace MVClogin2
             services.AddTransient<JsonFileSqlConstService>();
             //jwt---------------------------------------
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = Configuration["Jwt:Issuer"],
-            //            ValidAudience = Configuration["Jwt:Audience"],
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-            //        };
-            //    });
-            //services.AddAuthentication();
-
-            //multi-authentification policy--------------------------------
-
-
-
-            services.AddAuthentication(options =>
+            services.AddAuthentication().AddCookie(options =>
             {
-                // these must be set other ASP.NET Core will throw exception that no
-                // default authentication scheme or default challenge scheme is set.
-                options.DefaultAuthenticateScheme =
-                        CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme =
-                        CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie();
-            services.AddMvc(options => options.Filters.Add(new
-                     RequireHttpsAttribute()));
+                options.LoginPath = "/Account/Unauthorized/";
+                options.AccessDeniedPath = "/Account/Forbidden/";
+            }).AddJwtBearer(options =>
+                        {
+                            options.TokenValidationParameters = new TokenValidationParameters
+                            {
+                                ValidateIssuer = true,
+                                ValidateAudience = true,
+                                ValidateLifetime = true,
+                                ValidateIssuerSigningKey = true,
+                                ValidIssuer = Configuration["Jwt:Issuer"],
+                                ValidAudience = Configuration["Jwt:Audience"],
+                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                            };
+                        });
+            //var multiSchemePolicy = new AuthorizationPolicyBuilder(
+            //    CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
+            //    .RequireAuthenticatedUser().Build();
+            //services.AddAuthorization(o => o.DefaultPolicy = multiSchemePolicy); //cause of not working
 
-            //services.AddAuthentication(o =>
-            //  {
-            //      o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //      o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //  })
-            //  .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = Configuration["Jwt:Issuer"],
-            //            ValidAudience = Configuration["Jwt:Audience"],
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-            //        };
-            //    })
-            //  .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
-            //  {
-            //      o.ExpireTimeSpan = TimeSpan.FromMinutes(30); // optional
-            //  });
-            //var multiSchemePolicy = new Authentication(
-            //        CookieAuthenticationDefaults.AuthenticationScheme,
-            //        JwtBearerDefaults.AuthenticationScheme
-            //        )
-            //      .RequireAuthenticatedUser()
-            //      .Build();
-
-            //services.AddAuthentication(o => o.DefaultAuthenticateScheme = multiSchemePolicy);
-
-
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityDbContext>();
-
-            services.Configure<IdentityOptions>(opts =>
-            {
-                opts.Password.RequiredLength = 6;
-                opts.Password.RequireNonAlphanumeric = false;
-                opts.Password.RequireLowercase = false;
-                opts.Password.RequireUppercase = false;
-                opts.Password.RequireDigit = false;
-                opts.User.RequireUniqueEmail = true;
-            });
-
-            services.AddAuthentication(opts =>
-            {
-                opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                opts.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(//opts =>
-            /*{
-                opts.Events.DisableRedirectForPath(e => e.OnRedirectToLogin, "/api", StatusCodes.Status401Unauthorized);
-                opts.Events.DisableRedirectForPath(e => e.OnRedirectToAccessDenied, "/api", StatusCodes.Status403Forbidden);
-            }*/).AddJwtBearer(opts =>
-            {
-                opts.RequireHttpsMetadata = false;
-                opts.SaveToken = true;
-                opts.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.ASCII.GetBytes(Configuration["jwtSecret"])),
-                    ValidateAudience = false,
-                    ValidateIssuer = false
-                };
-                opts.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = async ctx =>
-                    {
-                        var usrmgr = ctx.HttpContext.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
-                        var signinmgr = ctx.HttpContext.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
-                        string username = ctx.Principal.FindFirst(ClaimTypes.Name)?.Value;
-                        IdentityUser idUser = await usrmgr.FindByNameAsync(username);
-                        ctx.Principal = await signinmgr.CreateUserPrincipalAsync(idUser);
-                    }
-                };
-            });
-
-            services.AddMvc();
-            services.AddControllers();
-            //services.AddMvc(config =>
-            //{
-            //    var policy = new AuthorizationPolicyBuilder()
-            //                     .RequireAuthenticatedUser()
-            //                     .Build();
-            //    config.Filters.Add(new AuthorizeFilter(policy));
-            //});
-
-            services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();
-
-            //cookie-------------------------------------------------
-
-           
+            services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -207,36 +106,6 @@ namespace MVClogin2
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
-            //cookie
-            //var cookiePolicyOptions = new CookiePolicyOptions
-            //{
-            //    MinimumSameSitePolicy = SameSiteMode.Strict,
-            //};
-            //app.UseCookiePolicy(cookiePolicyOptions);
-
-
-            //    app.UseCors(x => x
-            //.WithOrigins("https://localhost:3000") // путь к нашему SPA клиенту
-            //.AllowCredentials()
-            //.AllowAnyMethod()
-            //.AllowAnyHeader());
-            //    app.UseCookiePolicy(new CookiePolicyOptions
-            //    {
-            //        MinimumSameSitePolicy = SameSiteMode.Strict,
-            //        HttpOnly = HttpOnlyPolicy.Always,
-            //        Secure = CookieSecurePolicy.Always
-            //    });
-            //    app.Use(async (context, next) =>
-            //    {
-            //        var token = context.Request.Cookies[".AspNetCore.Application.Id"];
-            //        if (!string.IsNullOrEmpty(token))
-            //            context.Request.Headers.Add("Authorization", "Bearer " + token);
-
-            //        await next();
-            //    });
-            //    app.UseAuthentication();
-
-            //ConfigureOAuthTokenConsumption(app);
         }
     }
 }
