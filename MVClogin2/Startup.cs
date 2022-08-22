@@ -28,7 +28,7 @@ namespace MVClogin2
             //p
             services.AddTransient<JsonFileProductService>();
             services.AddTransient<JsonFileSqlConstService>();
-            //jwt---------------------------------------
+
 
             services.AddAuthentication().AddCookie(options =>
             {
@@ -53,7 +53,12 @@ namespace MVClogin2
             //services.AddAuthorization(o => o.DefaultPolicy = multiSchemePolicy); //!!!!!!!!!!!!!!!!!!!!!!!!!!!cause of not working
 
 
-            services.AddRazorPages();
+            services.AddMvc()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizeAreaPage("Simple","/Json/Json");
+                });
+            services.AddAuthorization();
 
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();          
         }
