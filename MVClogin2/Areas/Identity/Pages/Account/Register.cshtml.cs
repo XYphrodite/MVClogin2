@@ -101,7 +101,7 @@ namespace MVClogin2.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, firstName=Input.FirtName, lastName=Input.LastName };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, firstName=Input.FirtName, lastName=Input.LastName};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

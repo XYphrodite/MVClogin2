@@ -11,5 +11,6 @@ namespace MVClogin2.Areas.Identity.Data
     {
         public string firstName { get; set; }
         public string lastName { get; set; }
+
     }
 }

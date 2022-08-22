@@ -58,7 +58,7 @@ namespace MVClogin2
                 {
                     options.Conventions.AuthorizeAreaPage("Simple","/Json/Json");
                 });
-            services.AddAuthorization();
+            //services.AddAuthorization();
 
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();          
         }

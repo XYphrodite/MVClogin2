@@ -45,5 +45,22 @@ namespace MVClogin2.Sql
             }
             return false;
         }
+         public List<UserModel> getListOfMembers()
+        {
+            List <UserModel> list = new List<UserModel>();
+            string queryString =  $"SELECT [UserName], [firstName], [lastName] FROM [{sqlModel.Database}].[dbo].[AspNetUsers]";
+            SqlCommand sqlCommand = new SqlCommand(queryString,sqlConnection);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                UserModel u = new UserModel();
+                u.username = (string)reader["username"];
+                u.firstname = (string)reader["firstname"];
+                u.lastname = (string)reader["lastname"];
+                list.Add(u);
+            }
+            //sqlConnection.Close();
+            return list;
+        }
     }
 }
