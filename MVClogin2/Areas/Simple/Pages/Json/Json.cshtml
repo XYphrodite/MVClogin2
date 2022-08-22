@@ -1,0 +1,20 @@
+﻿@page
+@model MVClogin2.Pages.JsonModel
+@using MVClogin2.Models
+@{  
+   var product = ViewData["Products"] as IEnumerable<Product>;   
+}
+<table>  
+    <tr>   
+        <th>Title</th>  
+        <th>Description</th>  
+    </tr>  
+
+    @foreach (var pr in product)
+    {  
+        <tr> 
+            <td>@pr.Title</td>
+            <td>@pr.Description</td>
+        </tr> 
+    }
+</table>
