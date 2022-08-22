@@ -1,35 +1,14 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Owin.Security.Jwt;
 using MVClogin2.Areas.Identity.Data;
 using MVClogin2.Areas.Identity.Pages.Account;
 using MVClogin2.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
-
-using Owin;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace MVClogin2
 {
@@ -71,7 +50,10 @@ namespace MVClogin2
             //var multiSchemePolicy = new AuthorizationPolicyBuilder(
             //    CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
             //    .RequireAuthenticatedUser().Build();
-            //services.AddAuthorization(o => o.DefaultPolicy = multiSchemePolicy); //cause of not working
+            //services.AddAuthorization(o => o.DefaultPolicy = multiSchemePolicy); //!!!!!!!!!!!!!!!!!!!!!!!!!!!cause of not working
+
+
+            services.AddRazorPages();
 
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();          
         }

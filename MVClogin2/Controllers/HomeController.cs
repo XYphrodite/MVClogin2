@@ -1,20 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVClogin2.Models;
 using MVClogin2.Services;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 
 namespace MVClogin2.Controllers
@@ -46,13 +39,9 @@ namespace MVClogin2.Controllers
         {
             return View();
         }
-        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         [Authorize]
         public IActionResult JSON()
         {
-            //HttpContext.SignInAsync(
-            //    CookieAuthenticationDefaults.AuthenticationScheme,
-            //    HttpContext.User);
             JsonFileProductService ProductService = new JsonFileProductService(_env);
             IEnumerable<Product> products = ProductService.GetProducts();
             ViewData["Products"] = products;

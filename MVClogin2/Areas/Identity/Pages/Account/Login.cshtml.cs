@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -96,18 +94,6 @@ namespace MVClogin2.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    UserModel userModel = new UserModel
-                    {
-                        username = Input.Email,
-                        password = Input.Password
-                    };
-                    var token = Generate(userModel);
-                    HttpContext.Response.Cookies.Append("JWT", token,
-                        new CookieOptions
-                        {
-                            MaxAge = TimeSpan.FromMinutes(60)
-                        });
-
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
