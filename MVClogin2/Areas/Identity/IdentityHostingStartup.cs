@@ -19,8 +19,11 @@ namespace MVClogin2.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("ApplicationDbContextConnection")));
 
-                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                //    services.AddDefaultIdentity<ApplicationUser, IdentityRole>(options => {
+                //        options.SignIn.RequireConfirmedAccount = true;
+                //    })
+                //        .AddEntityFrameworkStores<ApplicationDbContext>();
+                //});
             });
         }
     }
