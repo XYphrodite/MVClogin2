@@ -46,7 +46,7 @@ namespace MVClogin2.Sql
             return false;
         }
          public List<UserModel> getListOfMembers()
-        {
+         {
             List <UserModel> list = new List<UserModel>();
             string queryString =  $"SELECT [UserName], [firstName], [lastName] FROM [{sqlModel.Database}].[dbo].[AspNetUsers]";
             SqlCommand sqlCommand = new SqlCommand(queryString,sqlConnection);
@@ -59,8 +59,11 @@ namespace MVClogin2.Sql
                 u.lastname = (string)reader["lastname"];
                 list.Add(u);
             }
-            //sqlConnection.Close();
             return list;
-        }
+         }
+         public void CloseConnection()
+         {
+            sqlConnection.Close();
+         }
     }
 }

@@ -66,7 +66,9 @@ namespace MVClogin2
             {
                 options.SignIn.RequireConfirmedAccount = true;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI()
+                .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider);
 
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();          
         }

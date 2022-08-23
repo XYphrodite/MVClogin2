@@ -7,7 +7,7 @@
 }
 
 <h1>All Roles</h1>
-<a style="width:auto" asp-controller="Admin" asp-action="CreateNewRole">
+<a class="btn btn-primary" asp-controller="Admin" asp-action="CreateNewRole">
          Add new role
      </a>
 @if(Model.Any())
@@ -22,7 +22,7 @@
                 <h5 class="card-title">@role.Name</h5>
             </div>
             <div class="card-footer">
-                <a href="#" class="btn btn-primary">Edit</a>
+                <a class="btn btn-primary" asp-action="EditRole" asp-controller="Admin" asp-route-id="@role.Id">Edit</a>
                 <a href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>
