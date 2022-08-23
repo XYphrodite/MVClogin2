@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVClogin2.Models;
 using MVClogin2.Services;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 
@@ -44,10 +46,19 @@ namespace MVClogin2.Controllers
             }
         }
         [AllowAnonymous]
-        [HttpGet("Public")]
-        public IActionResult Public()
+        [HttpPost("Public")]
+        public IActionResult Public(string d)
         {
-            return Ok("Hi, you're on public property");
+            RandomDataModel randomData = new RandomDataModel
+            {
+                data = d
+            };
+            string json = JsonConvert.SerializeObject(randomData);
+            string p = Path.Combine(_env.WebRootPath, "Data json", "RandomData.json");
+            StreamWriter Writer = new StreamWriter(p);
+            Writer.Write(json);
+            Writer.Close();
+            return Ok("Good");
         }
 
         private UserModel GetCurrentUser()
