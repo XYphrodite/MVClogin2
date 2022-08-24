@@ -27,9 +27,7 @@ namespace MVClogin2.Controllers
         [HttpGet("Data")]
         public IEnumerable<Product> GetData(string id=null)
         {
-            //var currentUser = GetCurrentUser();
-            JsonFileProductService ProductService = new JsonFileProductService(_env);
-            List<Product> products  = ProductService.GetProducts().ToList();
+            List<Product> products  =(new JsonFileProductService(_env)).GetProducts().ToList();
             if (id == null)
                 return products;
             else
@@ -53,12 +51,16 @@ namespace MVClogin2.Controllers
             {
                 data = d
             };
-            string json = JsonConvert.SerializeObject(randomData);
-            string p = Path.Combine(_env.WebRootPath, "Data json", "RandomData.json");
-            StreamWriter Writer = new StreamWriter(p);
-            Writer.Write(json);
+            StreamWriter Writer = new StreamWriter(Path.Combine(_env.WebRootPath, "Data json", "RandomData.json"));
+            Writer.Write(JsonConvert.SerializeObject(randomData));
             Writer.Close();
             return Ok("Good");
+        }
+        [AllowAnonymous]
+        [HttpGet("Value")]
+        public RandomDataModel GetValue()
+        {
+            return (new JsonFileRandomDataService(_env)).GetData();
         }
 
         private UserModel GetCurrentUser()
