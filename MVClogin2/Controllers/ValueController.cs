@@ -54,8 +54,9 @@ namespace MVClogin2.Controllers
             StreamWriter Writer = new StreamWriter(Path.Combine(_env.WebRootPath, "Data json", "RandomData.json"));
             Writer.Write(JsonConvert.SerializeObject(randomData));
             Writer.Close();
-            return Ok("Good");
+            return Ok("Success");
         }
+
         [AllowAnonymous]
         [HttpGet("Value")]
         public RandomDataModel GetValue()
@@ -66,7 +67,6 @@ namespace MVClogin2.Controllers
         private UserModel GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
-
             if (identity != null)
             {
                 var userClaims = identity.Claims;
