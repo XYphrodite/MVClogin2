@@ -2,42 +2,37 @@
 @model MVClogin2.Areas.Simple.Pages.Data.PageWithRandomDataModel
 @using MVClogin2.Services;
 @using Timer = System.Threading.Timer;
+@using System.IO;
 @{
-    string data=String.Empty;// = (new JsonFileRandomDataService(Model._env)).GetData().data;
-    var stateTimer = new Timer(MyMethod, null, 200, 1000);
+    //string data=String.Empty;// = (new JsonFileRandomDataService(Model._env)).GetData().data;
+    //var stateTimer = new Timer(MyMethod, null, 200, 1000);
+    string path = ViewData["path"].ToString();
 
-    void MyMethod(object state)
-    {
-        data = (new JsonFileRandomDataService(Model._env)).GetData().data;
-        Console.WriteLine(data);
-    }
+    //void MyMethod(object state)
+    //{
+    //    data = (new JsonFileRandomDataService(Model._env)).GetData().data;
+    //    Console.WriteLine(data);
+    //}
 }
 <html>
     <head> 
         <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> 
         <script type="text/javascript">
-            var value = "loading"
             var intervalId = window.setInterval(function(){
                   getData()
                 }, 1000);
 
             async function getData(){
-                value ='@data'
-                console.log(value)
-                document.getElementById("Value").innerHTML = "Random Value = " + value;
-                //load_js();
+                    $.getJSON('@path', function(json) {
+                        console.log(json); // this will show the info it in firebug console
+                    });
+                    //document.getElementById("Value").innerHTML = "Random Value = " + obj;
                 }
-            //function load_js()
-            //    {
-            //       var head= document.getElementsByTagName('head')[0];
-            //       var script= document.createElement('script');
-            //       script.src= 'source_file.js';
-            //       head.appendChild(script);
-            //    }
+
         </script>
     </head>  
     <body> 
-        <h1 id="Value">Random Value = @data</h1>
+        <h1 id="Value">Random Value = Model</h1>
     </body>
 </html>

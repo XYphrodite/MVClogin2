@@ -6,6 +6,7 @@ using MVClogin2.Models;
 using MVClogin2.Services;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Reflection.Emit;
 using System.Threading;
 using System.Timers;
@@ -22,20 +23,20 @@ namespace MVClogin2.Areas.Simple.Pages.Data
         {
             _env = env;
         }
-        
+
         public void OnGet()
         {
-            //var stateTimer = new Timer(MyMethod, null, 200, 1000);
-            //ViewData["env"] = _env;
-            //ViewData["c"] = (new JsonFileRandomDataService(_env)).GetData().data;
-            //data = (new JsonFileRandomDataService(_env)).GetData().data;
+            var stateTimer = new Timer(MyMethod, null, 200, 1000);
+            ViewData["path"] = Path.Combine(_env.WebRootPath, "Data json", "RandomData.json");
+            ViewData["c"] = (new JsonFileRandomDataService(_env)).GetData().data;
+            data = (new JsonFileRandomDataService(_env)).GetData().data;
         }
 
-        //private void MyMethod(object state)
-        //{
-        //    //ViewData["c"] = (new JsonFileRandomDataService(_env)).GetData().data;
-        //    Console.WriteLine(ViewData["c"]);
-        //    data = (new JsonFileRandomDataService(_env)).GetData().data;
-        //}
+        private void MyMethod(object state)
+        {
+            ViewData["c"] = (new JsonFileRandomDataService(_env)).GetData().data;
+            Console.WriteLine(ViewData["c"]);
+            data = (new JsonFileRandomDataService(_env)).GetData().data;
+        }
     }
 }
