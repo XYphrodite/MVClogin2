@@ -9,15 +9,15 @@
         <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> 
         <script type="text/javascript">
-            var intervalId = window.setInterval(function(){
-                  getData()
-                }, 1000);
+            //var intervalId = window.setInterval(function(){
+            //      getData()
+            //    }, 1000);
 
-            async function getData(){
-                const response= await fetch('https://localhost:44308/api/Value/Value')
-                const obj = await response.json();
-                document.getElementById("Value").innerHTML = "Random Value = " + obj.data;
-                }
+            //async function getData(){
+            //    const response= await fetch('https://localhost:44308/api/Value/Value')
+            //    const obj = await response.json();
+            //    document.getElementById("Value").innerHTML = "Random Value = " + obj.data;
+            //    }
         </script>
     </head>  
     <body> 

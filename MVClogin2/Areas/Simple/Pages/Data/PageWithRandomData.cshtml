@@ -13,13 +13,20 @@
                 }, 1000);
 
             async function getData(){
-                const response= await fetch('@ViewData["path"]/api/Value/Value')
-                const obj = await response.json();
-                document.getElementById("Value").innerHTML = "Random Value = " + obj.data;
+                $("#Value").load(window.location.href+'/Value/Value');  //controllerName/methodName
                 }
+
+            function getField(obj,name){
+                var result = obj.indexOf(name);
+                if (result!=-1){
+
+                }
+                return null;
+
+            }
         </script>
     </head>  
     <body> 
-        <h1 id="Value" >Random Value = Model</h1>
+        <h1><span>Random Value = </span><span id="Value">Model</span></h1>
     </body>
 </html>

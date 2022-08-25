@@ -48,11 +48,11 @@ namespace MVClogin2.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public IActionResult RefreshData()
-        {
-            return View();
-        }
+        //[AllowAnonymous]
+        //public IActionResult RefreshData()
+        //{
+        //    return View();
+        //}
         
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

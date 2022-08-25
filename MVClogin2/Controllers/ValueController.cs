@@ -14,7 +14,7 @@ using System.Security.Claims;
 namespace MVClogin2.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("api/[controller]")]
+    [Route("Simple/Data/PageWithRandomData/[controller]")]
     [ApiController]
     public class ValueController : ControllerBase
     {
@@ -59,9 +59,9 @@ namespace MVClogin2.Controllers
 
         [AllowAnonymous]
         [HttpGet("Value")]
-        public RandomDataModel GetValue()
+        public string GetValue()
         {
-            return (new JsonFileRandomDataService(_env)).GetData();
+            return (new JsonFileRandomDataService(_env)).GetData().data;
         }
 
         private UserModel GetCurrentUser()

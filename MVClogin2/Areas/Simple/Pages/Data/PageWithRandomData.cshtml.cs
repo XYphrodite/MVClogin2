@@ -20,8 +20,8 @@ namespace MVClogin2.Areas.Simple.Pages.Data
 
         public void OnGet()
         {
-            ViewData["path"] = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-            Console.WriteLine(ViewData["path"]);
+            //ViewData["path"] = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+            //Console.WriteLine(ViewData["path"]);
 
         }
 
