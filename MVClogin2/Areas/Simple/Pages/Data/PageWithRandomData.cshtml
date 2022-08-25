@@ -13,11 +13,12 @@
                 }, 1000);
 
             async function getData(){
-                $("#Value").load(window.location.href+'/Value/Value');  //controllerName/methodName
+                console.log("r");
+                $("#Value").load(window.location.href+" #Value");
                 }
         </script>
     </head>  
     <body> 
-        <h1><span>Random Value = </span><span id="Value">Model</span></h1>
+        <h1><span>Random Value = </span><span id="Value">@Model.data</span></h1>
     </body>
 </html>

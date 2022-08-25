@@ -18,10 +18,17 @@ namespace MVClogin2.Services
         }
         public RandomDataModel GetData()
         {
-            StreamReader stream = File.OpenText(JsonFileName);
-            var model = JsonSerializer.Deserialize<RandomDataModel>(stream.ReadToEnd());
-            stream.Close();
-            return model;
+            try
+            {
+                StreamReader stream = File.OpenText(JsonFileName);
+                var model = JsonSerializer.Deserialize<RandomDataModel>(stream.ReadToEnd());
+                stream.Close();
+                return model;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ using System.Security.Claims;
 namespace MVClogin2.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("Simple/Data/PageWithRandomData/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ValueController : ControllerBase
     {

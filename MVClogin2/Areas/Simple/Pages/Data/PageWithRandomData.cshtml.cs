@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MVClogin2.Services;
-using System;
 using System.IO;
 using System.Threading;
 
@@ -20,11 +19,17 @@ namespace MVClogin2.Areas.Simple.Pages.Data
 
         public void OnGet()
         {
-            //ViewData["path"] = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-            //Console.WriteLine(ViewData["path"]);
-
+            var stateTimer = new Timer(MyMethod, null, 200, 1000);
+            data = (new JsonFileRandomDataService(_env)).GetData().data;
         }
 
-
+        private void MyMethod(object state)
+        {
+            try
+            {
+                data = (new JsonFileRandomDataService(_env)).GetData().data;
+            }
+            finally { }
+        }
     }
 }
