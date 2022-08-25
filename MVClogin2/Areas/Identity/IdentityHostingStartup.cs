@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,12 +15,6 @@ namespace MVClogin2.Areas.Identity
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("ApplicationDbContextConnection")));
-
-                //    services.AddDefaultIdentity<ApplicationUser, IdentityRole>(options => {
-                //        options.SignIn.RequireConfirmedAccount = true;
-                //    })
-                //        .AddEntityFrameworkStores<ApplicationDbContext>();
-                //});
             });
         }
     }

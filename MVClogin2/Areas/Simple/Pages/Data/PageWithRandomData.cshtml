@@ -13,12 +13,11 @@
                 }, 1000);
 
             async function getData(){
-                console.log("r");
-                $("#Value").load(window.location.href+" #Value");
+                $("#Value").load(location.href+" #Value > *");
                 }
         </script>
     </head>  
     <body> 
-        <h1><span>Random Value = </span><span id="Value">@Model.data</span></h1>
+        <h1><span>Random Value = </span><span id="Value"><span>@Model.data</span></span></h1>
     </body>
 </html>
