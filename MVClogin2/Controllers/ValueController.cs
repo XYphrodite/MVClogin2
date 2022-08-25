@@ -45,16 +45,23 @@ namespace MVClogin2.Controllers
         }
         [AllowAnonymous]
         [HttpPost("Public")]
-        public IActionResult Public(string d)
+        public string Public(string d)
         {
             RandomDataModel randomData = new RandomDataModel
             {
                 data = d
             };
-            StreamWriter Writer = new StreamWriter(Path.Combine(_env.WebRootPath, "Data json", "RandomData.json"));
-            Writer.Write(JsonConvert.SerializeObject(randomData));
-            Writer.Close();
-            return Ok("Success");
+            try
+            {
+                StreamWriter Writer = new StreamWriter(Path.Combine(_env.WebRootPath, "Data json", "RandomData.json"));
+                Writer.Write(JsonConvert.SerializeObject(randomData));
+                Writer.Close();
+                return "Success";
+            }
+            catch
+            {
+                return "Error";
+            }
         }
 
         [AllowAnonymous]

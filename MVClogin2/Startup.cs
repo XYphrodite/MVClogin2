@@ -48,18 +48,14 @@ namespace MVClogin2
                                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                             };
                         });
-            //var multiSchemePolicy = new AuthorizationPolicyBuilder(
-            //    CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
-            //    .RequireAuthenticatedUser().Build();
-            //services.AddAuthorization(o => o.DefaultPolicy = multiSchemePolicy); //!!!!!!!!!!!!!!!!!!!!!!!!!!!cause of not working
 
 
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeAreaPage("Simple","/Json/Json");
+                    options.Conventions.AuthorizeAreaPage("Simple", "/Data/PageWithRandomData");
                 });
-            //services.AddAuthorization();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -69,6 +65,16 @@ namespace MVClogin2
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider);
+
+            services.Configure<IdentityOptions>(opts =>
+            {
+                opts.Password.RequiredLength = 6;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+                opts.User.RequireUniqueEmail = true;
+            });
 
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();          
         }

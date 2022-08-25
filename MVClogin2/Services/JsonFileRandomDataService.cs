@@ -27,7 +27,10 @@ namespace MVClogin2.Services
             }
             catch
             {
-                return null;
+                return (new RandomDataModel
+                {
+                    data = null
+                });
             }
         }
     }
