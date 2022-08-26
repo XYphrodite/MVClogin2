@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using MVClogin2.Models;
 using MVClogin2.Services;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace MVClogin2.Sql
 {

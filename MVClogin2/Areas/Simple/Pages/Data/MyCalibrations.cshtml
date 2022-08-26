@@ -1,0 +1,36 @@
+﻿@page
+@model MVClogin2.Areas.Simple.Pages.Data.MyCalibrationsModel
+@{
+}
+<script>
+         var intervalId = window.setInterval(function(){
+               getData()
+             }, 1000);
+
+         async function getData(){
+             $("#Calibrations").load(location.href+" #Calibrations > *");
+             }
+</script>
+<div class="card">
+        <div class="card-header">
+            <h3>Список тарировок</h3>
+        </div>
+        <div class="card-body">
+            <table id="Calibrations">  
+                <tr>   
+                    <th>Имя</th>  
+                    <th>Описание</th>  
+                    <th>Дата</th> 
+                </tr>  
+
+                @foreach (var calibration in Model.models)
+                {  
+                    <tr> 
+                        <td>@calibration.Name</td>
+                        <td>@calibration.Description</td>
+                        <td>@calibration.dateTime</td>
+                    </tr> 
+                }
+            </table>
+        </div>
+</div>

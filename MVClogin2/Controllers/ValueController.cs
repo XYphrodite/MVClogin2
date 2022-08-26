@@ -77,6 +77,7 @@ namespace MVClogin2.Controllers
             SqlWorker sqlWorker = new SqlWorker();
             sqlWorker.initialize(_env);
             sqlWorker.tryConnect();
+            model.dateTime = DateTime.Now.ToString();
             model.UserId=sqlWorker.getIdByUsername(GetCurrentUser().username);
             if (sqlWorker.InsertCalibration(model))
                 return "Success";
