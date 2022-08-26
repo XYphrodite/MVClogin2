@@ -7,17 +7,19 @@ using System.Data.SqlClient;
 
 namespace MVClogin2.Sql
 {
-    public class SqlWorker
+    public class SqlWorker : ISqlWorker
     {
+        private IWebHostEnvironment _env;
         string connetionString = string.Empty;
         SqlConnection sqlConnection;
         SqlModel sqlModel;
-        public void initialize(IWebHostEnvironment _env)
+        public SqlWorker(IWebHostEnvironment env)
         {
+            _env = env;
             JsonFileSqlConstService sqlConstService = new JsonFileSqlConstService(_env);
             sqlModel = sqlConstService.GetSqlConst();
         }
-        public bool tryConnect()
+        private bool tryConnect()
         {
             connetionString = "Server=" + sqlModel.Server + ";Database=" + sqlModel.Database +
                 ";user id=" + sqlModel.userId + ";password=" + sqlModel.password;
@@ -34,17 +36,23 @@ namespace MVClogin2.Sql
         }
         public bool tryAuthenticate(string username, string password)
         {
+            tryConnect();
             string queryString = $"SELECT COUNT (UserName) FROM [{sqlModel.Database}].[dbo].[AspNetUsers] WHERE UserName = '{username}' and PasswordHash = '{password}';";
             if (sqlConnection.State == ConnectionState.Open)
             {
                 SqlCommand command = new SqlCommand(queryString, sqlConnection);
                 if (command.ExecuteScalar().ToString() == "1")
+                {
+                    CloseConnection();
                     return true;
+                }
             }
+            CloseConnection();
             return false;
         }
         public List<UserModel> getListOfMembers()
         {
+            tryConnect();
             List<UserModel> list = new List<UserModel>();
             string queryString = $"SELECT [UserName], [firstName], [lastName] FROM [{sqlModel.Database}].[dbo].[AspNetUsers]";
             SqlCommand sqlCommand = new SqlCommand(queryString, sqlConnection);
@@ -57,38 +65,55 @@ namespace MVClogin2.Sql
                 u.lastname = (string)reader["lastname"];
                 list.Add(u);
             }
+            CloseConnection();
             return list;
         }
         public List<CalibrationModel> getCalibrations(string id)
         {
+            tryConnect();
             List<CalibrationModel> list = new List<CalibrationModel>();
-            string queryString = $"SELECT [userId], [name], [description], [date] FROM [{sqlModel.Database}].[dbo].[Calibrations]";
+            string queryString = $"SELECT [UserId], [Name], [Description], [dateTime] FROM [{sqlModel.Database}].[dbo].[Calibrations]";
             SqlCommand sqlCommand = new SqlCommand(queryString, sqlConnection);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                CalibrationModel c = new CalibrationModel();
-                c.UserId = (string)reader["userId"];
-                if (c.UserId != id)
-                    continue;
-                c.Name = (string)reader["name"];
-                c.Description = (string)reader["description"];
-                c.dateTime = (string)reader["date"];
-                list.Add(c);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    CalibrationModel c = new CalibrationModel();
+                    c.UserId = (string)reader["UserId"];
+                    if (c.UserId != id)
+                        continue;
+                    c.Name = (string)reader["Name"];
+                    c.Description = (string)reader["Description"];
+                    c.dateTime = (string)reader["dateTime"];
+                    list.Add(c);
+                }
+                CloseConnection();
+                return list;
             }
-            return list;
+            catch
+            {
+                CloseConnection();
+                return list;
+            }
         }
         public bool InsertCalibration(CalibrationModel model)
         {
-            string queryString = $"INSERT INTO dbo.Calibrations (userId,name,description,date) VALUES " +
+            tryConnect();
+            string queryString = $"INSERT INTO dbo.Calibrations (UserId,Name,Description,dateTime) VALUES " +
                 $"('{model.UserId}','{model.Name}','{model.Description}', '{model.dateTime}')";
             SqlCommand command = new SqlCommand(queryString, sqlConnection);
             if (command.ExecuteNonQuery() == 1)
+            {
+                CloseConnection();
                 return true;
+            }
+            CloseConnection();
             return false;
         }
         public string getIdByUsername(string username)
         {
+            tryConnect();
             List<string> list = new List<string>();
             string queryString = $"SELECT [Id] FROM [{sqlModel.Database}].[dbo].[AspNetUsers] WHERE UserName = '{username}'";
             SqlCommand sqlCommand = new SqlCommand(queryString, sqlConnection);
@@ -99,13 +124,14 @@ namespace MVClogin2.Sql
                 list.Add(i);
             }
             reader.Close();
+            CloseConnection();
             if (list.Count == 1)
                 return list[0];
             return null;
         }
-        public void CloseConnection()
-         {
+        private void CloseConnection()
+        {
             sqlConnection.Close();
-         }
+        }
     }
 }

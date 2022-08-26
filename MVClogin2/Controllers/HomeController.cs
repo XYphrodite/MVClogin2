@@ -47,14 +47,7 @@ namespace MVClogin2.Controllers
             ViewData["Products"] = products;
             return View();
         }
-
-        //[AllowAnonymous]
-        //public IActionResult RefreshData()
-        //{
-        //    return View();
-        //}
         
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

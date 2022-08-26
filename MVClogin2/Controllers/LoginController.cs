@@ -63,9 +63,7 @@ namespace MVClogin2.Controllers
 
         private UserModel Authentificate(UserLogin userLogin)
         {
-            SqlWorker sqlWorker = new SqlWorker();
-            sqlWorker.initialize(_env);
-            sqlWorker.tryConnect();
+            SqlWorker sqlWorker = new SqlWorker(_env);
             if (sqlWorker.tryAuthenticate(userLogin.Login, userLogin.Password))
             {
                 var currentUser = new UserModel

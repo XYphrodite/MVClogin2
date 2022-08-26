@@ -19,10 +19,13 @@ namespace MVClogin2.Areas.Simple.Pages.Data
         }
         public void OnGet()
         {
-            SqlWorker sqlWorker = new SqlWorker();
-            sqlWorker.initialize(_env);
-            sqlWorker.tryConnect();
-            models = sqlWorker.getCalibrations((GetCurrentUser().username));
+            try
+            {
+                SqlWorker sqlWorker = new SqlWorker(_env);
+                models = sqlWorker.getCalibrations(GetCurrentUser().username);
+            }
+            finally { }
+            
         }
         private UserModel GetCurrentUser()
         {

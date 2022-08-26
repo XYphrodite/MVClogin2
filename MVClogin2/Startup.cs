@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using MVClogin2.Areas.Identity.Data;
 using MVClogin2.Areas.Identity.Pages.Account;
 using MVClogin2.Services;
+using MVClogin2.Sql.Data;
 using System.Text;
 
 namespace MVClogin2
@@ -58,6 +59,7 @@ namespace MVClogin2
                     options.Conventions.AuthorizeAreaPage("Simple", "/Data/MyCalibrations");
                 });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<CustomDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -65,7 +67,8 @@ namespace MVClogin2
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
-                .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider);
+                .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider)
+                .AddEntityFrameworkStores<CustomDbContext>();
 
             services.Configure<IdentityOptions>(opts =>
             {

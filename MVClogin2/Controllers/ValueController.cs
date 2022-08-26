@@ -74,9 +74,7 @@ namespace MVClogin2.Controllers
         [HttpPost("UploadCalibration")]
         public string UploadCalibration([FromBody] CalibrationModel model)
         {
-            SqlWorker sqlWorker = new SqlWorker();
-            sqlWorker.initialize(_env);
-            sqlWorker.tryConnect();
+            SqlWorker sqlWorker = new SqlWorker(_env);
             model.dateTime = DateTime.Now.ToString();
             model.UserId=sqlWorker.getIdByUsername(GetCurrentUser().username);
             if (sqlWorker.InsertCalibration(model))
