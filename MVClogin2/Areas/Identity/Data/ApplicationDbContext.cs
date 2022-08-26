@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace MVClogin2.Areas.Identity.Data
 {
@@ -18,6 +20,19 @@ namespace MVClogin2.Areas.Identity.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .Build();
+                var connectionString = configuration.GetConnectionString("CustomDbContextConnection");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
         internal class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
         {

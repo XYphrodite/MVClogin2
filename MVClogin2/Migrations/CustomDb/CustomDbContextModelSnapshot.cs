@@ -32,6 +32,9 @@ namespace MVClogin2.Migrations.CustomDb
                     b.Property<string>("dateTime")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("id")
+                        .HasColumnType("int");
+
                     b.ToTable("Calibrations");
                 });
 #pragma warning restore 612, 618

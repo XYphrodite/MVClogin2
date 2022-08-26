@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -79,7 +80,7 @@ namespace MVClogin2
                 opts.Password.RequireDigit = false;
                 opts.User.RequireUniqueEmail = true;
             });
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();          
         }
 
