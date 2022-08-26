@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVClogin2.Models;
 using MVClogin2.Services;
+using MVClogin2.Sql;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -43,6 +45,11 @@ namespace MVClogin2.Controllers
                 return null; 
             }
         }
+        [HttpGet("Name")]
+        public string GetName()
+        {
+            return GetCurrentUser().username;
+        }
         [AllowAnonymous]
         [HttpPost("Public")]
         public string Public(string d)
@@ -64,6 +71,18 @@ namespace MVClogin2.Controllers
             }
         }
 
+        [HttpPost("UploadCalibration")]
+        public string UploadCalibration([FromBody] CalibrationModel model)
+        {
+            SqlWorker sqlWorker = new SqlWorker();
+            sqlWorker.initialize(_env);
+            sqlWorker.tryConnect();
+            model.UserId=sqlWorker.getIdByUsername(GetCurrentUser().username);
+            if (sqlWorker.InsertCalibration(model))
+                return "Success";
+            return "Error";
+        }
+
         [AllowAnonymous]
         [HttpGet("Value")]
         public string GetValue()
@@ -80,11 +99,10 @@ namespace MVClogin2.Controllers
 
                 return new UserModel
                 {
-                    username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value
+                    username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
                 };
             }
             return null;
         }
-
     }
 }

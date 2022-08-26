@@ -55,6 +55,7 @@ namespace MVClogin2
                 {
                     options.Conventions.AuthorizeAreaPage("Simple","/Json/Json");
                     options.Conventions.AuthorizeAreaPage("Simple", "/Data/PageWithRandomData");
+                    options.Conventions.AuthorizeAreaPage("Simple", "/Data/MyCalibrations");
                 });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
