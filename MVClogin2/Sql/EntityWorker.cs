@@ -90,7 +90,7 @@ namespace MVClogin2.Sql
             return query.Any();
 
         }
-        public async void AddDefault()
+        public void AddDefault()
             {
             var context = new ApplicationDbContext(optionsApplication);
             var query = context.Users
