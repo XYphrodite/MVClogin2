@@ -29,7 +29,7 @@ namespace MVClogin2.Controllers
         }
         public IActionResult ListOfMembers()
         {
-            SqlWorker sqlWorker = new SqlWorker(_env);
+            EntityWorker sqlWorker = new EntityWorker();
             List<UserModel> users;
             users = sqlWorker.getListOfMembers();
             ViewData["members"] = users;

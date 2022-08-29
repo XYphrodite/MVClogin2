@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using MVClogin2.Areas.Identity.Data;
 using MVClogin2.Areas.Identity.Pages.Account;
 using MVClogin2.Services;
+using MVClogin2.Sql;
 using MVClogin2.Sql.Data;
 using System.Text;
 
@@ -17,9 +18,11 @@ namespace MVClogin2
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IWebHostEnvironment _env;
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -81,7 +84,9 @@ namespace MVClogin2
                 opts.User.RequireUniqueEmail = true;
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();          
+            services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();
+
+            (new EntityWorker()).AddDefault();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -217,5 +217,6 @@ namespace MVClogin2.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
         }
+        
     }
 }

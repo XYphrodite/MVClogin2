@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using MVClogin2.Models;
 using MVClogin2.Services;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace MVClogin2.Sql
 {
-    public class SqlWorker : ISqlWorker
+    public class SqlWorker :ISqlWorker
     {
         private IWebHostEnvironment _env;
         string connetionString = string.Empty;
@@ -97,11 +98,11 @@ namespace MVClogin2.Sql
                 return list;
             }
         }
-        public bool InsertCalibration(CalibrationModel model)
+        public bool InsertCalibration(CalibrationModel model, string username)
         {
             tryConnect();
             string queryString = $"INSERT INTO dbo.Calibrations (UserId,Name,Description,dateTime) VALUES " +
-                $"('{model.UserId}','{model.Name}','{model.Description}', '{model.dateTime}')";
+                $"('{getIdByUsername(username)}','{model.Name}','{model.Description}', '{DateTime.Now.ToString()}')";
             SqlCommand command = new SqlCommand(queryString, sqlConnection);
             if (command.ExecuteNonQuery() == 1)
             {
@@ -111,7 +112,7 @@ namespace MVClogin2.Sql
             CloseConnection();
             return false;
         }
-        public string getIdByUsername(string username)
+        private string getIdByUsername(string username)
         {
             tryConnect();
             List<string> list = new List<string>();
@@ -132,6 +133,10 @@ namespace MVClogin2.Sql
         private void CloseConnection()
         {
             sqlConnection.Close();
+        }
+        public void AddDefault()
+        {
+            throw new NotImplementedException();
         }
     }
 }

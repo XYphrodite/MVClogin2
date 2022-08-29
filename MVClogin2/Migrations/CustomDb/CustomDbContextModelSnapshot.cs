@@ -20,6 +20,11 @@ namespace MVClogin2.Migrations.CustomDb
 
             modelBuilder.Entity("MVClogin2.Models.CalibrationModel", b =>
                 {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -32,8 +37,7 @@ namespace MVClogin2.Migrations.CustomDb
                     b.Property<string>("dateTime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("id")
-                        .HasColumnType("int");
+                    b.HasKey("id");
 
                     b.ToTable("Calibrations");
                 });

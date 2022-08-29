@@ -9,8 +9,6 @@
     <Compile Remove="Migrations\20220815134128_InitApplicationUser.Designer.cs" />
     <Compile Remove="Migrations\20220815134356_InitApplicationUser.cs" />
     <Compile Remove="Migrations\20220815134356_InitApplicationUser.Designer.cs" />
-    <Compile Remove="Migrations\CustomDb\20220826130133_MyMigration.cs" />
-    <Compile Remove="Migrations\CustomDb\20220826130133_MyMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +33,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Migrations\CustomDb\" />
   </ItemGroup>
 
 </Project>

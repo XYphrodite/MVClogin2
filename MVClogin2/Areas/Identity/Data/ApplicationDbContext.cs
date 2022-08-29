@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;
+using MVClogin2.Sql;
 using System.IO;
 
 namespace MVClogin2.Areas.Identity.Data
@@ -20,6 +22,8 @@ namespace MVClogin2.Areas.Identity.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
+
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
