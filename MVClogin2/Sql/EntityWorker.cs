@@ -107,6 +107,7 @@ namespace MVClogin2.Sql
                 };
                 context.Users.Add(admin);
                 var query1 = context.Roles.Add(new IdentityRole { Name = "admin", NormalizedName="ADMIN" });
+                var query3 = context.Roles.Add(new IdentityRole { Name = "user", NormalizedName = "USER" });
                 ApplicationUser user = new ApplicationUser 
                 { 
                     UserName = "user@user.ru",
@@ -117,6 +118,7 @@ namespace MVClogin2.Sql
                     NormalizedUserName = "user@user.ru".ToUpper()
                 };
                 context.Users.Add(user);
+
                 context.SaveChanges();
                 string adminId = context.Users
                     .Where(u => u.UserName == "admin@admin.ru")
@@ -129,6 +131,19 @@ namespace MVClogin2.Sql
                     .FirstOrDefault()
                     .ToString();
                 var query2 = context.UserRoles.Add(new IdentityUserRole<string> { RoleId = roleId, UserId = adminId });
+
+                string userId = context.Users
+                    .Where(u => u.UserName == "user@user.ru")
+                    .Select(u => u.Id)
+                    .FirstOrDefault()
+                    .ToString();
+                roleId = context.Roles
+                    .Where(r => r.Name == "user")
+                    .Select(r => r.Id)
+                    .FirstOrDefault()
+                    .ToString();
+                var query4 = context.UserRoles.Add(new IdentityUserRole<string> { RoleId = roleId, UserId = userId });
+
                 context.SaveChanges();
             }
         }
