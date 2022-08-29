@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MVClogin2.Models;
-using MVClogin2.Services;
 using System.IO;
 
 namespace MVClogin2.Sql.Data
@@ -27,14 +25,5 @@ namespace MVClogin2.Sql.Data
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder
-        //        .Entity<CalibrationModel>(
-        //            eb =>
-        //            {
-        //                eb.HasNoKey();
-        //            });
-        //}
     }
 }

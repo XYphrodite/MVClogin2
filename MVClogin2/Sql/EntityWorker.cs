@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVClogin2.Areas.Identity.Data;
 using MVClogin2.Models;
@@ -107,8 +106,7 @@ namespace MVClogin2.Sql
                     NormalizedUserName = "admin@admin.ru".ToUpper()
                 };
                 context.Users.Add(admin);
-                IdentityRole identityRole = new IdentityRole { Name = "admin" };
-                var query1 = context.Roles.Add(identityRole);
+                var query1 = context.Roles.Add(new IdentityRole { Name = "admin", NormalizedName="ADMIN" });
                 ApplicationUser user = new ApplicationUser 
                 { 
                     UserName = "user@user.ru",
