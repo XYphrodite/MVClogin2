@@ -2,7 +2,7 @@
 
 namespace MVClogin2.Migrations.CustomDb
 {
-    public partial class CustomDbMigration : Migration
+    public partial class CutomDbMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

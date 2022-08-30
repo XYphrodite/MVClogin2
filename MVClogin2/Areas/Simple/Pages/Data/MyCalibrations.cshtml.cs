@@ -21,7 +21,7 @@ namespace MVClogin2.Areas.Simple.Pages.Data
         {
             try
             {
-                SqlWorker sqlWorker = new SqlWorker(_env);
+                EntityWorker sqlWorker = new EntityWorker();
                 models = sqlWorker.getCalibrations(GetCurrentUser().username);
             }
             finally { }

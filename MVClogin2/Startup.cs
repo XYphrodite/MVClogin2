@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,20 +10,20 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using MVClogin2.Areas.Identity.Data;
 using MVClogin2.Areas.Identity.Pages.Account;
+using MVClogin2.Hubs;
 using MVClogin2.Services;
 using MVClogin2.Sql;
 using MVClogin2.Sql.Data;
+using System.Linq;
 using System.Text;
 
 namespace MVClogin2
 {
     public class Startup
     {
-        private IWebHostEnvironment _env;
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -62,8 +63,8 @@ namespace MVClogin2
                     options.Conventions.AuthorizeAreaPage("Simple", "/Data/PageWithRandomData");
                     options.Conventions.AuthorizeAreaPage("Simple", "/Data/MyCalibrations");
                 });
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<CustomDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContextConnection")));
+            services.AddDbContext<CustomDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContextConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -85,6 +86,13 @@ namespace MVClogin2
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
+            });
+            services.AddCors();
+            services.AddSignalR();
+            services.AddServerSideBlazor();
 
             (new EntityWorker()).AddDefault();
         }
@@ -118,6 +126,9 @@ namespace MVClogin2
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapBlazorHub();
+                endpoints.MapHub<ChatHub>("/_chathub");
+                //endpoints.MapFallbackToPage("/_Host");          404
             });
         }
     }

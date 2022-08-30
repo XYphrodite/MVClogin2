@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVClogin2.Migrations.CustomDb
 {
     [DbContext(typeof(CustomDbContext))]
-    [Migration("20220829090340_CustomDbMigration")]
-    partial class CustomDbMigration
+    [Migration("20220830092157_CutomDbMigration")]
+    partial class CutomDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
