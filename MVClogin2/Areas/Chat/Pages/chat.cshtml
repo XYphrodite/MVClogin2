@@ -1,0 +1,80 @@
+﻿@page "/chat"
+@model MVClogin2.Areas.Chat.Pages.ChatPageModel
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.SignalR.Client
+@using MVClogin2.Models
+@inject UserManager<ApplicationUser> UserManager
+@{  
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SignalR Chat - Metanit.com</title>
+</head>
+<body>
+    <div id="inputForm">
+        <input type="text" id="message" />
+        <input type="button" id="sendBtn" value="Отправить" />
+    </div>
+    <div id="chatroom"></div>
+    <script src="js/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/chat")
+            .build();
+ 
+        hubConnection.on("Send", function (data) {
+ 
+            let elem = document.createElement("p");
+            elem.appendChild(document.createTextNode(data));
+            let firstElem = document.getElementById("chatroom").firstChild;
+            document.getElementById("chatroom").insertBefore(elem, firstElem);
+ 
+        });
+ 
+        document.getElementById("sendBtn").addEventListener("click", function (e) {
+            let message = document.getElementById("message").value;
+            hubConnection.invoke("Send", message);
+        });
+ 
+        hubConnection.start();
+    </script>
+</body>
+</html>
+
+@*<div class="container overflow-auto shadow-sm p-3 mb-5 bg-white rounded" style="height: 500px">
+    @if(!Model.userMessages.Any())
+    {
+        <p>No messages yet, start chatting!</p>
+    }
+
+    @foreach(var userMessage in Model.userMessages)
+    {
+        <div class="row mb-3 d-flex"> 
+            <div class="card shadow" style="width:18rem;">
+                <div class="card-header">
+                    @userMessage.Username
+                </div>
+                <ul class="list-group list-group-flash">
+                    <li class="list-group-item">@userMessage.Message</li>
+                </ul>
+            </div>
+        </div>
+    }
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <p type="text" class="frpm-control" placeholder="Your name" readonly="Model.isUserReadOnly">@UserManager.GetUserName(User)</p>
+        </div>
+        <div class="col-6">
+            <textarea asp-for="messageInput" class="frpm-control" placeholder="Start typing..."></textarea>
+        </div>
+        <div class="col-3">
+            <button typeof="button" onClick="Send" disabled="IsConnected" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+</div>*@

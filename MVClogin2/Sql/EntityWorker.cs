@@ -92,6 +92,8 @@ namespace MVClogin2.Sql
         public void AddDefault()
             {
             var context = new ApplicationDbContext(optionsApplication);
+            if (!context.Database.EnsureCreated())
+                return;
             var query = context.Users
                 .Where(n => n.UserName == "admin@admin.ru");
             if (!query.Any())

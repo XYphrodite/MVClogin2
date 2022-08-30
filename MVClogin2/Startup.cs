@@ -34,8 +34,7 @@ namespace MVClogin2
             services.AddControllersWithViews();
             //p
             services.AddTransient<JsonFileProductService>();
-            services.AddTransient<JsonFileSqlConstService>();
-
+            services.AddSingleton<ISqlWorker, EntityWorker>();
 
             services.AddAuthentication().AddCookie(options =>
             {
@@ -55,13 +54,13 @@ namespace MVClogin2
                             };
                         });
 
-
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeAreaPage("Simple","/Json/Json");
                     options.Conventions.AuthorizeAreaPage("Simple", "/Data/PageWithRandomData");
                     options.Conventions.AuthorizeAreaPage("Simple", "/Data/MyCalibrations");
+                    options.Conventions.AuthorizeAreaPage("Chat", "/ChatPage/ChatPage");
                 });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContextConnection")));
             services.AddDbContext<CustomDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContextConnection")));
@@ -127,8 +126,8 @@ namespace MVClogin2
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapBlazorHub();
-                endpoints.MapHub<ChatHub>("/_chathub");
-                //endpoints.MapFallbackToPage("/_Host");          404
+                endpoints.MapHub<ChatHub>("/chathub");
+                //endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

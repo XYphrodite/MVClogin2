@@ -21,9 +21,11 @@ namespace MVClogin2.Controllers
     public class ValueController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
-        public ValueController(IWebHostEnvironment env)
+        private ISqlWorker sqlWorker;
+        public ValueController(IWebHostEnvironment env, ISqlWorker sqlWorker)
         {
             _env = env;
+            this.sqlWorker = sqlWorker;
         }
 
         [HttpGet("Data")]
@@ -74,7 +76,6 @@ namespace MVClogin2.Controllers
         [HttpPost("UploadCalibration")]
         public string UploadCalibration([FromBody] CalibrationModel model)
         {
-            EntityWorker sqlWorker = new EntityWorker();
             if (sqlWorker.InsertCalibration(model, GetCurrentUser().username))
                 return "Success";
             return "Error";

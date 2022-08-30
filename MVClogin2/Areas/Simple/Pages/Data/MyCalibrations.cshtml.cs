@@ -13,15 +13,16 @@ namespace MVClogin2.Areas.Simple.Pages.Data
     {
         public List<CalibrationModel> models;
         private readonly IWebHostEnvironment _env;
-        public MyCalibrationsModel(IWebHostEnvironment env)
+        private ISqlWorker sqlWorker;
+        public MyCalibrationsModel(IWebHostEnvironment env, ISqlWorker sqlWorker)
         {
             _env = env;
+            this.sqlWorker = sqlWorker;
         }
         public void OnGet()
         {
             try
             {
-                EntityWorker sqlWorker = new EntityWorker();
                 models = sqlWorker.getCalibrations(GetCurrentUser().username);
             }
             finally { }

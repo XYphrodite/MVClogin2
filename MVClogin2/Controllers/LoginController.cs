@@ -18,11 +18,13 @@ namespace MVClogin2.Controllers
     {
         private IConfiguration _config;
         private readonly IWebHostEnvironment _env;
+        private ISqlWorker sqlWorker;
 
-        public LoginController(IConfiguration config, IWebHostEnvironment env)
+        public LoginController(IConfiguration config, IWebHostEnvironment env, ISqlWorker sqlWorker)
         {
             _config = config;
             _env = env;
+            this.sqlWorker = sqlWorker;
         }
         [AllowAnonymous]
         [HttpPost]
@@ -59,7 +61,6 @@ namespace MVClogin2.Controllers
 
         private UserModel Authentificate(UserLogin userLogin)
         {
-            EntityWorker sqlWorker = new EntityWorker();
             if (sqlWorker.tryAuthenticate(userLogin.Login, userLogin.Password))
             {
                 var currentUser = new UserModel

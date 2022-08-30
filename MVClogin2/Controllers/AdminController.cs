@@ -19,17 +19,24 @@ namespace MVClogin2.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private ISqlWorker sqlWorker;
 
-        public AdminController(ILogger<HomeController> logger, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AdminController(
+            ILogger<HomeController> logger, 
+            IWebHostEnvironment env, 
+            RoleManager<IdentityRole> roleManager, 
+            UserManager<ApplicationUser> userManager,
+            ISqlWorker sqlWorker
+            )
         {
             _logger = logger;
             _env = env;
             _roleManager = roleManager;
             _userManager = userManager;
+            this.sqlWorker = sqlWorker;
         }
         public IActionResult ListOfMembers()
         {
-            EntityWorker sqlWorker = new EntityWorker();
             List<UserModel> users;
             users = sqlWorker.getListOfMembers();
             ViewData["members"] = users;

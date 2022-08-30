@@ -43,8 +43,8 @@
   <ItemGroup>
     <Folder Include="Areas\Chat\Controllers\" />
     <Folder Include="Areas\Chat\Data\" />
-    <Folder Include="Areas\Chat\Models\" />
-    <Folder Include="Areas\Chat\Pages\" />
+    <Folder Include="Areas\Chat\Pages\ChatPage\" />
+    <Folder Include="Areas\Chat\Views\" />
     <Folder Include="Migrations\" />
     <Folder Include="Migrations\CustomDb\" />
   </ItemGroup>
