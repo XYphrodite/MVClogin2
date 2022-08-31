@@ -90,10 +90,12 @@ namespace MVClogin2
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
             });
             services.AddCors();
-            services.AddSignalR();
+            services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
             services.AddServerSideBlazor();
 
-            (new EntityWorker()).AddDefault();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

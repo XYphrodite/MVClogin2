@@ -19,13 +19,20 @@
         <input type="button" id="sendBtn" value="Отправить" />
     </div>
     <div id="chatroom"></div>
+    <ul id="messageList">
+
+    </ul>
     <script src="js/signalr/dist/browser/signalr.min.js"></script>
     <script>
-        const hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/chat")
+        hubConnection = new signalR.HubConnectionBuilder()
+            .configureLogging(signalR.LogLevel.Debug)
+            .withUrl("/chathub")
             .build();
- 
-        hubConnection.on("Send", function (data) {
+
+
+        hubConnection.start().catch(err => console.error(err.toString()));
+
+        hubConnection.on("SendMessage", function (data) {
  
             let elem = document.createElement("p");
             elem.appendChild(document.createTextNode(data));
@@ -36,10 +43,13 @@
  
         document.getElementById("sendBtn").addEventListener("click", function (e) {
             let message = document.getElementById("message").value;
-            hubConnection.invoke("Send", message);
+            hubConnection.invoke("SendMessage", message).catch(err => console.error(err.toString()));
         });
- 
-        hubConnection.start();
+        
+
+
+
+        
     </script>
 </body>
 </html>
