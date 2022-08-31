@@ -20,10 +20,8 @@
         <textarea class="toSend" id="message"></textarea>
         <input type="button" id="sendBtn" value="Send"/>
     </div>
-    <div id="chatroom" type="range"></div>
-    <ul id="messageList">
+    <div id="chatroom" ></div>
 
-    </ul>
     <script src="js/signalr/dist/browser/signalr.min.js"></script>
     <script>
         var isCurrentUser=false;
@@ -36,9 +34,11 @@
 
         hubConnection.start().catch(err => console.error(err.toString()));
 
-        hubConnection.on("SendMessage", function (data, i) {
+        hubConnection.on("SendMessage", function (data, username) {
             let elem = document.createElement("div");
-            elem.appendChild(document.createTextNode(data));
+            var rec_mes=username+"<br><br>"+data;
+            //elem.appendChild(document.createTextNode(rec_mes));
+            elem.innerHTML=rec_mes;
             if(isCurrentUser)
             {
                 elem.className = "myMsg";
@@ -58,7 +58,7 @@
             let message = document.getElementById("message").value;
             isCurrentUser=true;
             if(message!=""){
-                hubConnection.invoke("SendMessage", message).catch(err => console.error(err.toString()));
+                hubConnection.invoke("SendMessage", message,"@UserManager.GetUserName(User)").catch(err => console.error(err.toString()));
             }
         });
         

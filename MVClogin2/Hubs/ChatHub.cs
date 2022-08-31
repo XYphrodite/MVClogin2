@@ -5,9 +5,9 @@ namespace MVClogin2.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string message)
+        public async Task SendMessage(string message, string username)
         {
-            await Clients.All.SendAsync("SendMessage", message);
+            await Clients.All.SendAsync("SendMessage", message, username);
         }
     }
 }
