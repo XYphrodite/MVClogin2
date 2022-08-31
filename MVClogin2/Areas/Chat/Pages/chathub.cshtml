@@ -11,19 +11,23 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>SignalR Chat - Metanit.com</title>
+    <title>Chat</title>
+    <link rel="stylesheet" href="~/css/chat.css" />
 </head>
 <body>
-    <div id="inputForm">
-        <input type="text" id="message" />
-        <input type="button" id="sendBtn" value="Отправить" />
+    <h3 class="text-center">Our chat!</h3>
+    <div id="inputForm" style="margin:2%">
+        <textarea class="toSend" id="message"></textarea>
+        <input type="button" id="sendBtn" value="Send"/>
     </div>
-    <div id="chatroom"></div>
+    <div id="chatroom" type="range"></div>
     <ul id="messageList">
 
     </ul>
     <script src="js/signalr/dist/browser/signalr.min.js"></script>
     <script>
+        var isCurrentUser=false;
+
         hubConnection = new signalR.HubConnectionBuilder()
             .configureLogging(signalR.LogLevel.Debug)
             .withUrl("/chathub")
@@ -32,18 +36,30 @@
 
         hubConnection.start().catch(err => console.error(err.toString()));
 
-        hubConnection.on("SendMessage", function (data) {
- 
-            let elem = document.createElement("p");
+        hubConnection.on("SendMessage", function (data, i) {
+            let elem = document.createElement("div");
             elem.appendChild(document.createTextNode(data));
-            let firstElem = document.getElementById("chatroom").firstChild;
-            document.getElementById("chatroom").insertBefore(elem, firstElem);
+            if(isCurrentUser)
+            {
+                elem.className = "myMsg";
+            }
+            else
+            {
+                elem.className = "Msg";
+
+            }
+            isCurrentUser=false;
+            let LastElem = document.getElementById("chatroom").LastChild;
+            document.getElementById("chatroom").insertBefore(elem, LastElem);
  
         });
  
         document.getElementById("sendBtn").addEventListener("click", function (e) {
             let message = document.getElementById("message").value;
-            hubConnection.invoke("SendMessage", message).catch(err => console.error(err.toString()));
+            isCurrentUser=true;
+            if(message!=""){
+                hubConnection.invoke("SendMessage", message).catch(err => console.error(err.toString()));
+            }
         });
         
 

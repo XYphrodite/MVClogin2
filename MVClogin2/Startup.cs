@@ -32,10 +32,10 @@ namespace MVClogin2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //p
-            services.AddTransient<JsonFileProductService>();
-            services.AddSingleton<ISqlWorker, EntityWorker>();
-
+       //|-------------------------------------------------------|
+       /*|*/services.AddTransient<JsonFileProductService>();   //|
+       /*|*/services.AddSingleton<ISqlWorker, EntityWorker>(); //|
+       //|-------------------------------------------------------|
             services.AddAuthentication().AddCookie(options =>
             {
                 options.LoginPath = "/Account/Unauthorized/";
@@ -60,7 +60,7 @@ namespace MVClogin2
                     options.Conventions.AuthorizeAreaPage("Simple","/Json/Json");
                     options.Conventions.AuthorizeAreaPage("Simple", "/Data/PageWithRandomData");
                     options.Conventions.AuthorizeAreaPage("Simple", "/Data/MyCalibrations");
-                    options.Conventions.AuthorizeAreaPage("Chat", "/ChatPage/ChatPage");
+                    options.Conventions.AuthorizeAreaPage("Chat", "/chathub");
                 });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContextConnection")));
             services.AddDbContext<CustomDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContextConnection")));
@@ -129,7 +129,6 @@ namespace MVClogin2
                 endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapHub<ChatHub>("/chathub");
-                //endpoints.MapFallbackToPage("/_Host");
             });
         }
     }
