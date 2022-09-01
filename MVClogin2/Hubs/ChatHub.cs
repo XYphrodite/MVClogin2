@@ -8,6 +8,10 @@ namespace MVClogin2.Hubs
         public async Task SendMessage(string message, string username)
         {
             await Clients.All.SendAsync("SendMessage", message, username);
+            //save to database|
+            //                |
+            //      here      |
+            //----------------|
         }
     }
 }

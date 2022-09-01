@@ -1,13 +1,9 @@
 ﻿@page "/chat"
 @model MVClogin2.Areas.Chat.Pages.ChatPageModel
-@using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.SignalR.Client
-@using MVClogin2.Models
 @inject UserManager<ApplicationUser> UserManager
-@{  
-}
 
-<!DOCTYPE html>
+
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,12 +12,13 @@
 </head>
 <body>
     <h3 class="text-center">Our chat!</h3>
-    <div id="inputForm" style="margin:2%">
-        <textarea class="toSend" id="message"></textarea>
-        <input type="button" id="sendBtn" value="Send"/>
+    <div id="chatroom"></div>
+    <div id="inputForm">
+        <span>
+            <textarea class="toSend" id="message"></textarea>
+            <input type="button" id="sendBtn" class="send-message-button"/>
+        </span>
     </div>
-    <div id="chatroom" ></div>
-
     <script src="js/signalr/dist/browser/signalr.min.js"></script>
     <script>
         var isCurrentUser=false;
@@ -31,12 +28,11 @@
             .withUrl("/chathub")
             .build();
 
-
         hubConnection.start().catch(err => console.error(err.toString()));
 
         hubConnection.on("SendMessage", function (data, username) {
             let elem = document.createElement("div");
-            var rec_mes=username+"<br><br>"+data;
+            var rec_mes=username+"<br>"+data;
             //elem.appendChild(document.createTextNode(rec_mes));
             elem.innerHTML=rec_mes;
             if(isCurrentUser)
@@ -46,12 +42,10 @@
             else
             {
                 elem.className = "Msg";
-
             }
             isCurrentUser=false;
             let LastElem = document.getElementById("chatroom").LastChild;
             document.getElementById("chatroom").insertBefore(elem, LastElem);
- 
         });
  
         document.getElementById("sendBtn").addEventListener("click", function (e) {
@@ -60,47 +54,7 @@
             if(message!=""){
                 hubConnection.invoke("SendMessage", message,"@UserManager.GetUserName(User)").catch(err => console.error(err.toString()));
             }
-        });
-        
-
-
-
-        
+        });  
     </script>
 </body>
 </html>
-
-@*<div class="container overflow-auto shadow-sm p-3 mb-5 bg-white rounded" style="height: 500px">
-    @if(!Model.userMessages.Any())
-    {
-        <p>No messages yet, start chatting!</p>
-    }
-
-    @foreach(var userMessage in Model.userMessages)
-    {
-        <div class="row mb-3 d-flex"> 
-            <div class="card shadow" style="width:18rem;">
-                <div class="card-header">
-                    @userMessage.Username
-                </div>
-                <ul class="list-group list-group-flash">
-                    <li class="list-group-item">@userMessage.Message</li>
-                </ul>
-            </div>
-        </div>
-    }
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-3">
-            <p type="text" class="frpm-control" placeholder="Your name" readonly="Model.isUserReadOnly">@UserManager.GetUserName(User)</p>
-        </div>
-        <div class="col-6">
-            <textarea asp-for="messageInput" class="frpm-control" placeholder="Start typing..."></textarea>
-        </div>
-        <div class="col-3">
-            <button typeof="button" onClick="Send" disabled="IsConnected" class="btn btn-primary">Send</button>
-        </div>
-    </div>
-</div>*@

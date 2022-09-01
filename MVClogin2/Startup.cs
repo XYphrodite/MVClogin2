@@ -32,10 +32,12 @@ namespace MVClogin2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-       //|-------------------------------------------------------|
-       /*|*/services.AddTransient<JsonFileProductService>();   //|
-       /*|*/services.AddSingleton<ISqlWorker, EntityWorker>(); //|
-       //|-------------------------------------------------------|
+       //|---------------------------------------------------------------------------------|
+       /*|*/services.AddTransient<JsonFileProductService>();//                             |
+       /*|*/services.AddSingleton<ISqlWorker, EntityWorker>();//                           | 
+       /*|*/services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();//          |
+       /*|*/services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();//|
+       //|---------------------------------------------------------------------------------|
             services.AddAuthentication().AddCookie(options =>
             {
                 options.LoginPath = "/Account/Unauthorized/";
@@ -83,8 +85,7 @@ namespace MVClogin2
                 opts.Password.RequireDigit = false;
                 opts.User.RequireUniqueEmail = true;
             });
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher>();
+            
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
