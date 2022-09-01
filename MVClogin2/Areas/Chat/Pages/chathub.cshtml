@@ -43,7 +43,6 @@
         hubConnection.on("SendMessage", function (data, username) {
             let elem = document.createElement("div");
             var rec_mes=username+"<br>"+data;
-            //elem.appendChild(document.createTextNode(rec_mes));
             elem.innerHTML=rec_mes;
             if(isCurrentUser)
             {

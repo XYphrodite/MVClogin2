@@ -8,6 +8,15 @@
       "files": [
         "dist/browser/signalr.min.js"
       ]
+    },
+    {
+      "library": "jquery@3.6.1",
+      "destination": "wwwroot/lib/jquery",
+    },
+    {
+      "provider": "cdnjs",
+      "library": "twitter-bootstrap@5.2.0",
+      "destination": "wwwroot/lib/twitter-bootstrap/"
     }
   ]
 }
