@@ -84,6 +84,7 @@ namespace MVClogin2
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
                 opts.User.RequireUniqueEmail = true;
+                opts.SignIn.RequireConfirmedEmail = false;
             });
             
             services.AddResponseCompression(opts =>
