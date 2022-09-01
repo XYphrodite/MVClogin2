@@ -12,7 +12,8 @@ namespace MVClogin2.Sql
         bool tryAuthenticate(string username, string password);
         void AddDefault();
         void SaveMessageToDb(UserMessage message);
-        List<UserMessage> LoadMessageFromDb();
+        List<UserMessage> LoadMessageFromDb(string id = null);
+
 
     }
 }

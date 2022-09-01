@@ -156,21 +156,38 @@ namespace MVClogin2.Sql
             context.SaveChanges();
         }
 
-        public List<UserMessage> LoadMessageFromDb()
+        public List<UserMessage> LoadMessageFromDb(string id=null)
         {
             List<UserMessage> list = new List<UserMessage>();
             var context = new CustomDbContext(optionsCustom);
-            var query = context.userMessages;
-                //.Where(c => c.UserId == id); //load by group
-            foreach (var m in query)
+            if (id != null)
             {
-                list.Add(new UserMessage
+                var query = context.userMessages
+                    .Where(m => m.groupId == id);
+                foreach (var m in query)
                 {
-                    Username = m.Username,
-                    Message=m.Message,
-                    userId=m.userId,
-                    DateSent=m.DateSent
-                });
+                    list.Add(new UserMessage
+                    {
+                        Username = m.Username,
+                        Message = m.Message,
+                        userId = m.userId,
+                        DateSent = m.DateSent
+                    });
+                }
+            }
+            else
+            {
+                var query = context.userMessages;
+                foreach (var m in query)
+                {
+                    list.Add(new UserMessage
+                    {
+                        Username = m.Username,
+                        Message = m.Message,
+                        userId = m.userId,
+                        DateSent = m.DateSent
+                    });
+                }
             }
             return list;
         }

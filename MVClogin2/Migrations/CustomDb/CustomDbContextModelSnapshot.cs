@@ -43,6 +43,22 @@ namespace MVClogin2.Migrations.CustomDb
                     b.ToTable("Calibrations");
                 });
 
+            modelBuilder.Entity("MVClogin2.Models.GroupUserModel", b =>
+                {
+                    b.Property<string>("id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("GroupId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("groupUsers");
+                });
+
             modelBuilder.Entity("MVClogin2.Models.UserMessage", b =>
                 {
                     b.Property<int>("Id")

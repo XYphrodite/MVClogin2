@@ -154,7 +154,7 @@ namespace MVClogin2.Sql
             throw new NotImplementedException();
         }
 
-        List<UserMessage> ISqlWorker.LoadMessageFromDb()
+        public List<UserMessage> LoadMessageFromDb(string id)
         {
             throw new NotImplementedException();
         }
