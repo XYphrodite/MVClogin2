@@ -40,7 +40,7 @@ namespace MVClogin2.Sql
             return list;
         }
 
-        private string getIdByUsername(string username)
+        public string getIdByUsername(string username)
         {
             var context = new ApplicationDbContext(optionsApplication);
             var query = context.Users
@@ -148,6 +148,31 @@ namespace MVClogin2.Sql
 
                 context.SaveChanges();
             }
+        }
+        public void SaveMessageToDb(UserMessage message)
+        {
+            var context = new CustomDbContext(optionsCustom);
+            context.userMessages.Add(message);
+            context.SaveChanges();
+        }
+
+        public List<UserMessage> LoadMessageFromDb()
+        {
+            List<UserMessage> list = new List<UserMessage>();
+            var context = new CustomDbContext(optionsCustom);
+            var query = context.userMessages;
+                //.Where(c => c.UserId == id); //load by group
+            foreach (var m in query)
+            {
+                list.Add(new UserMessage
+                {
+                    Username = m.Username,
+                    Message=m.Message,
+                    userId=m.userId,
+                    DateSent=m.DateSent
+                });
+            }
+            return list;
         }
     }
 }

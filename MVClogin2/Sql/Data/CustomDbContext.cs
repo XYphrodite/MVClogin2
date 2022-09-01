@@ -12,6 +12,7 @@ namespace MVClogin2.Sql.Data
         {
         }
         public DbSet<CalibrationModel> Calibrations { get; set; } = null;
+        public DbSet<UserMessage> userMessages { get; set; } = null;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

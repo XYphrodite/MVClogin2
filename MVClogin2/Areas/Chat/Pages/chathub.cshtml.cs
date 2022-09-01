@@ -1,20 +1,21 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.SignalR.Client;
-using MVClogin2.Areas.Identity.Data;
 using MVClogin2.Models;
-using System;
+using MVClogin2.Sql;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace MVClogin2.Areas.Chat.Pages
 {
     public class ChatPageModel : PageModel
     {
-
+        private ISqlWorker sqlWorker;
+        public List<UserMessage> list;
+        public ChatPageModel(ISqlWorker sqlWorker)
+        {
+            this.sqlWorker = sqlWorker;
+        }
+        public void OnGet()
+        {
+            list = sqlWorker.LoadMessageFromDb();
+        }
     }
 }

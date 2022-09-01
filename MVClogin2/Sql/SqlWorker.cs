@@ -138,5 +138,25 @@ namespace MVClogin2.Sql
         {
             throw new NotImplementedException();
         }
+
+        string ISqlWorker.getIdByUsername(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveMessageToDb(UserMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LoadMessageFromDb()
+        {
+            throw new NotImplementedException();
+        }
+
+        List<UserMessage> ISqlWorker.LoadMessageFromDb()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -12,11 +12,23 @@
 </head>
 <body>
     <h3 class="text-center">Our chat!</h3>
-    <div id="chatroom"></div>
+    <div id="chatroom">
+        @foreach (var item in Model.list)
+        {
+            if (item.Username == UserManager.GetUserName(User))
+            {
+                <div class="myMsg">@item.Username<br>@item.Message</div>
+            }
+            else
+            {
+                <div class="Msg">@item.Username<br>@item.Message</div>
+            }
+        }
+    </div>
     <div id="inputForm">
         <span>
             <textarea class="toSend" id="message"></textarea>
-            <input type="button" id="sendBtn" class="send-message-button"/>
+        <input type="button" id="sendBtn" class="send-message-button"/>
         </span>
     </div>
     <script src="js/signalr/dist/browser/signalr.min.js"></script>
