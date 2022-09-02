@@ -25,7 +25,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:6407;https://localhost:44308"
+      "sqlDebugging": true,
+      "applicationUrl": "http://localhost:6407;https://localhost:44308",
+      "nativeDebugging": true
     },
     "Профиль 1": {
       "commandName": "Project",
