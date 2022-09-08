@@ -29,12 +29,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Simple" asp-page="/Data/PageWithRandomData">Data</a>
                         </li>
-                        <!--li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="JSON">JSON</a>
-                        </li -->
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="RefreshData">Data</a>
-                        </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Simple" asp-page="/Json/Json">JSON Razor Page</a>
                         </li>
@@ -43,6 +37,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Chat" asp-page="/chathub">Chat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Simple" asp-page="/Test/Test">Test</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Simple" asp-page="/Test/Test2">Test2</a>
                         </li>
                         @if(User.IsInRole("admin")){
                         <li class="nav-item">
@@ -71,7 +71,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - MVClogin2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+           <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
