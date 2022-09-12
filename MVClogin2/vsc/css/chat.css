@@ -1,0 +1,130 @@
+﻿.Msg {
+    position: relative;
+    margin: 10px 1.8%;
+    padding: 10px;
+    text-align: left;
+    font: 400 .9em 'Open Sans', sans-serif;
+    border: 1px solid #5BDCE4;
+    border-radius: 10px;
+    margin-right: 30%;
+    background: #5BDCE4;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+.myMsg {
+    position: relative;
+    margin: 10px 1.8%;
+    margin-left: 30%;
+    padding: 10px;
+    text-align: left;
+    font: 400 .9em 'Open Sans', sans-serif;
+    border: 1px solid #F1A44A;
+    border-radius: 10px;
+    background: #F1A44A;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+.Msg:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 15px solid #5BDCE4;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    top: 0;
+    left: -15px;
+}
+
+.Msg:before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 17px solid #5BDCE4;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    top: -1px;
+    left: -17px;
+}
+
+.myMsg:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-bottom: 15px solid #F1A44A;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    bottom: 0;
+    right: -15px;
+}
+
+.myMsg:before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-bottom: 17px solid #F1A44A;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    bottom: -1px;
+    right: -17px;
+}
+
+#chatroom {
+    overflow-y: scroll;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 68vh;
+    z-index: 2;
+    box-sizing: border-box;
+    border-radius: 5rem 0rem 0rem 5rem;
+    background: #23344E;
+    padding: 10px;
+    box-shadow: inset 0px 0px 50px rgba(0, 0, 0, 0.8);
+}
+
+#message {
+}
+
+.toSend {
+    resize: none;
+    width: 85%;
+    height: 9.5vh;
+    border: none;
+    background-image: none;
+    padding: 1rem 1rem;
+    border-radius: 1.125rem;
+    font-family: Red hat Display, sans-serif;
+    font-weight: 400;
+    margin-top: 0.5rem;
+    background: #FFFFFF;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.4);
+}
+
+ul {
+    list-style-type: none;
+}
+
+.send-message-button {
+    background-color: #458dff;
+    width: 14%;
+    height: 9.5vh;
+    outline: none;
+    border: 0px;
+    vertical-align: top;
+    margin-top: 0.5rem;
+    border-radius: 1.125rem;
+    font-size: 13px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.50);
+}
+.send-message-button:active {
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.50);
+}
+
+#input-form {
+
+}

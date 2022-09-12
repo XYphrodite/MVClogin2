@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MyWebSite</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib//bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib//bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/lib//bootstrap/dist/css/bootstrap-reboot.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/dropdown.css" />
-    <link rel="stylesheet" href="~/lib//bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/cosmo.css" />
+    <script src="https://kit.fontawesome.com/3332dd17ee.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MyWebSite</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -38,18 +42,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Chat" asp-page="/chathub">Chat</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Simple" asp-page="/Test/Test">Simple</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Simple" asp-page="/Test/Test2">pxCode</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Simple" asp-page="/Test/Test3">Builder.io</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Simple" asp-page="/Test/Test4">Export kit</a>
-                        </li>
                         @if(User.IsInRole("admin")){
                         <li class="nav-item">
                              <div class="dropdown">
@@ -75,7 +67,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top" style="bottom:0px">
         <div class="container">
            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

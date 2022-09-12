@@ -47,6 +47,7 @@
     <Folder Include="Areas\Chat\Views\" />
     <Folder Include="Migrations\" />
     <Folder Include="Migrations\CustomDb\" />
+    <Folder Include="Tests\" />
   </ItemGroup>
 
 </Project>
